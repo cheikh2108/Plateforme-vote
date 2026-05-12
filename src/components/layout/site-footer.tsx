@@ -14,7 +14,7 @@ export function SiteFooter() {
           </h3>
           <p className="text-sm leading-relaxed text-muted-foreground">
             {siteConfig.tagline} Architecture auditée, anonymat du bulletin,
-            traçabilité technique sans exposition des choix individuels.
+            traçabilité sans exposition des choix individuels.
           </p>
         </div>
         <div className="grid grid-cols-2 gap-10 text-sm sm:grid-cols-3">
@@ -42,7 +42,7 @@ export function SiteFooter() {
             <p className="font-medium text-foreground">Confiance</p>
             <ul className="space-y-2 text-muted-foreground">
               <li>Auth domaine académique</li>
-              <li>RLS PostgreSQL</li>
+              <li>Accès restreint</li>
               <li>Temps réel anonymisé</li>
             </ul>
           </div>
@@ -55,7 +55,7 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="border-t border-border/60 py-6 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} {siteConfig.name} · Infrastructure électorale étudiante
+        © {new Date().getFullYear()} {siteConfig.name} · Plateforme électorale étudiante
       </div>
     </footer>
   );

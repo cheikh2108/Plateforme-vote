@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { VoteBallot } from "@/components/vote/vote-ballot";
-import { siteConfig } from "@/config/site";
 import { hasSupabase } from "@/lib/env";
 import {
   electionIsLive,
@@ -43,7 +42,7 @@ export default async function VotePage() {
           </p>
           <h1 className="text-4xl font-semibold tracking-tight">Vote sécurisé</h1>
           <p className="text-muted-foreground">
-            Configurez Supabase pour activer l’authentification et le bulletin anonyme.
+            La plateforme n’est pas encore reliée au service d’authentification. Activez la configuration pour voter.
           </p>
         </header>
         <VoteBallot
@@ -76,8 +75,7 @@ export default async function VotePage() {
           </p>
           <h1 className="text-4xl font-semibold tracking-tight text-foreground">{election.title}</h1>
           <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Authentification <span className="font-medium text-foreground">@{siteConfig.allowedEmailDomain}</span> —
-            votre choix est séparé de votre identité dans la base des bulletins.
+            Votre choix est séparé de votre identité. Le compte utilisé sert uniquement à valider votre accès.
           </p>
         </div>
         <Link

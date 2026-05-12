@@ -1,13 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { Menu } from "lucide-react";
-import { useState } from "react";
 import { siteConfig } from "@/config/site";
+import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
+import { LogoutButton } from "@/components/layout/logout-button";
 import {
   Sheet,
   SheetContent,
@@ -26,6 +28,27 @@ const links = [
 export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [authenticated, setAuthenticated] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const supabase = createClient();
+
+    supabase.auth
+      .getUser()
+      .then(({ data: { user } }) => setAuthenticated(Boolean(user)))
+      .catch(() => setAuthenticated(false));
+
+    const { data } = supabase.auth.onAuthStateChange(() => {
+      supabase.auth
+        .getUser()
+        .then(({ data: { user } }) => setAuthenticated(Boolean(user)))
+        .catch(() => setAuthenticated(false));
+    });
+
+    return () => {
+      data.subscription.unsubscribe();
+    };
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl">
@@ -69,15 +92,19 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Link
-            href="/auth/login"
-            className={cn(
-              buttonVariants({ variant: "outline", size: "sm" }),
-              "hidden sm:inline-flex rounded-full",
-            )}
-          >
-            Connexion étudiant
-          </Link>
+          {authenticated === null ? null : authenticated ? (
+            <LogoutButton className="hidden sm:inline-flex" />
+          ) : (
+            <Link
+              href="/auth/login"
+              className={cn(
+                buttonVariants({ variant: "outline", size: "sm" }),
+                "hidden sm:inline-flex rounded-full",
+              )}
+            >
+              Connexion
+            </Link>
+          )}
           <Link
             href="/vote"
             className={cn(buttonVariants({ size: "sm" }), "hidden rounded-full sm:inline-flex")}
@@ -107,13 +134,23 @@ export function SiteHeader() {
                     {link.label}
                   </Link>
                 ))}
-                <Link
-                  href="/auth/login"
-                  onClick={() => setOpen(false)}
-                  className={cn(buttonVariants(), "mt-4 rounded-full text-center")}
-                >
-                  Connexion
-                </Link>
+                {authenticated === null ? null : authenticated ? (
+                  <LogoutButton
+                    className="mt-4 w-full"
+                    variant="default"
+                    size="default"
+                    label="Déconnexion"
+                    onSuccess={() => setOpen(false)}
+                  />
+                ) : (
+                  <Link
+                    href="/auth/login"
+                    onClick={() => setOpen(false)}
+                    className={cn(buttonVariants(), "mt-4 rounded-full text-center")}
+                  >
+                    Connexion
+                  </Link>
+                )}
               </div>
             </SheetContent>
           </Sheet>

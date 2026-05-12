@@ -47,7 +47,7 @@ export function VoteBallot({
   async function confirmVote() {
     if (!choice || !selected) return;
     if (!hasSupabase) {
-      toast.error("Impossible de voter sans projet Supabase configuré.");
+      toast.error("Le vote n'est pas encore prêt sur cette plateforme.");
       return;
     }
 

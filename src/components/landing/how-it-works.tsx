@@ -1,15 +1,15 @@
 const steps = [
   {
-    title: "Vérification académique",
-    detail: "Magic link ou OTP Supabase — domaine étudiant contrôlé avant toute émission de jeton.",
+    title: "Vérification",
+    detail: "Un code est envoyé par e-mail pour confirmer que le compte appartient bien à l'électeur.",
   },
   {
     title: "Vote anonyme",
-    detail: "Sélection d’une liste, confirmation explicite, bulletin injecté sans identifiant personnel.",
+    detail: "Sélection d’une liste, confirmation explicite, puis dépôt du bulletin sans exposition d’identité.",
   },
   {
     title: "Publication maîtrisée",
-    detail: "Pendant le scrutin : participation uniquement. Après clôture : résultats détaillés activés par l’administration.",
+    detail: "Pendant le scrutin : participation uniquement. Après clôture : résultats détaillés publiés par l’administration.",
   },
 ];
 

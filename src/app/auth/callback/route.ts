@@ -52,5 +52,8 @@ export async function GET(request: Request) {
     return NextResponse.redirect(new URL("/auth/login", requestUrl.origin));
   }
 
-  return NextResponse.redirect(new URL(nextPath, requestUrl.origin));
+  const setupPasswordUrl = new URL("/auth/setup-password", requestUrl.origin);
+  setupPasswordUrl.searchParams.set("next", nextPath);
+
+  return NextResponse.redirect(setupPasswordUrl);
 }

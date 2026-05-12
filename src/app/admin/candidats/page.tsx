@@ -18,13 +18,12 @@ export default function AdminCandidatesPage() {
         </p>
         <h1 className="text-3xl font-semibold tracking-tight">Candidats</h1>
         <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-          Les fiches sont stockées dans PostgreSQL (table <code className="rounded bg-muted px-1 py-0.5 text-xs">candidates</code>
-          ). Pour la première mise en production, importez vos données via SQL ou l’éditeur Supabase,
-          puis reliez les médias au Storage si nécessaire.
+          Les fiches sont gérées dans la base de données. Ajoutez ici les visuels, les programmes et les promesses des
+          listes avant l&apos;ouverture du scrutin.
         </p>
       </header>
       <div className="rounded-3xl border border-dashed border-border bg-card/60 p-8 text-sm text-muted-foreground">
-        Extension prévue : formulaires administrateur couplés aux politiques RLS — la structure base est déjà prête.
+        La gestion détaillée des candidats sera ajoutée dans la prochaine étape.
       </div>
     </div>
   );

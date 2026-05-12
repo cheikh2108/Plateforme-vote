@@ -35,7 +35,7 @@ export default async function CandidatesPage() {
       </div>
       {candidates.length === 0 ? (
         <p className="mt-10 text-sm text-muted-foreground">
-          Aucun candidat publié pour le moment. Vérifiez la configuration Supabase ou les données démo.
+          Aucun candidat publié pour le moment. Vérifiez la configuration de la plateforme ou les données de démo.
         </p>
       ) : null}
     </div>

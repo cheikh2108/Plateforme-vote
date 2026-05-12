@@ -21,8 +21,8 @@ export default async function AdminElectionPage() {
         </p>
         <h1 className="text-3xl font-semibold tracking-tight">Élection</h1>
         <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-          Les interrupteurs critiques (ouverture du vote, publication des résultats) sont disponibles sur la synthèse.
-          Les fenêtres horaires (`opens_at`, `closes_at`) se règlent directement dans Supabase pour l’instant.
+          Les réglages principaux du scrutin sont centralisés dans la synthèse. Les dates d&apos;ouverture et de clôture
+          restent visibles ici pour contrôle.
         </p>
       </header>
 

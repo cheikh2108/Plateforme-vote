@@ -10,10 +10,10 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 type Props = {
-  closesAt: Date;
+  closesAtText: string;
 };
 
-export function HeroSection({ closesAt }: Props) {
+export function HeroSection({ closesAtText }: Props) {
   const root = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -40,21 +40,21 @@ export function HeroSection({ closesAt }: Props) {
         <div className="max-w-2xl space-y-8">
           <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/80 px-3 py-1 text-xs font-medium text-muted-foreground">
             <ShieldCheck className="size-3.5 text-brand" aria-hidden />
-            Vote vérifié · anonymat technique · auditabilité
+            Accès vérifié · vote anonyme · suivi maîtrisé
           </div>
           <div className="space-y-5">
             <h1
               data-hero-line
               className="text-balance text-4xl font-semibold tracking-tight text-foreground sm:text-5xl lg:text-6xl"
             >
-              {siteConfig.heroStatement}
+              Votez, suivez et publiez avec un parcours clair et rassurant.
             </h1>
             <p
               data-hero-line
               className="max-w-xl text-pretty text-lg leading-relaxed text-muted-foreground"
             >
-              {siteConfig.tagline} Une expérience sobre, institutionnelle et rapide —
-              pensée pour les élections officielles du campus.
+              {siteConfig.tagline} Chaque électeur vérifie son identité, choisit son mot de passe et accède à son
+              espace en quelques secondes.
             </p>
           </div>
           <div data-hero-line className="flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -76,7 +76,7 @@ export function HeroSection({ closesAt }: Props) {
             </Link>
           </div>
           <p data-hero-line className="text-xs text-muted-foreground">
-            Domaine autorisé : @{siteConfig.allowedEmailDomain}
+            Code de vérification requis avant la création du mot de passe.
           </p>
         </div>
 
@@ -89,15 +89,7 @@ export function HeroSection({ closesAt }: Props) {
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
             Fin du scrutin
           </p>
-          <p className="mt-3 text-3xl font-semibold tracking-tight text-foreground">
-            {closesAt.toLocaleDateString("fr-FR", {
-              weekday: "long",
-              day: "numeric",
-              month: "long",
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
-          </p>
+          <p className="mt-3 text-3xl font-semibold tracking-tight text-foreground">{closesAtText}</p>
           <div className="mt-6 h-px w-full bg-border" />
           <dl className="mt-6 space-y-4 text-sm">
             <div className="flex justify-between gap-4">
@@ -106,7 +98,11 @@ export function HeroSection({ closesAt }: Props) {
             </div>
             <div className="flex justify-between gap-4">
               <dt className="text-muted-foreground">Journalisation</dt>
-              <dd className="font-medium text-foreground">PostgreSQL + RLS</dd>
+              <dd className="font-medium text-foreground">Journal sécurisé</dd>
+            </div>
+            <div className="flex justify-between gap-4">
+              <dt className="text-muted-foreground">Accès</dt>
+              <dd className="font-medium text-foreground">Étudiants et administration</dd>
             </div>
           </dl>
         </motion.div>

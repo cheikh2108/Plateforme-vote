@@ -82,7 +82,7 @@ export default async function AdminHomePage() {
               {stats?.participation_count ?? 0}
             </p>
             <p className="mt-2 text-xs text-muted-foreground">
-              Basée sur le registre anonymisé (vote_registry).
+              Basée sur les bulletins enregistrés.
             </p>
           </CardContent>
         </Card>

@@ -62,8 +62,7 @@ export function ResultsView({
             {liveParticipation}
           </p>
           <p className="mt-4 text-sm text-muted-foreground">
-            Mis à jour en temps réel lorsque Supabase Realtime est activé sur{" "}
-            <span className="font-medium text-foreground">election_stats</span>.
+            Mis à jour en temps réel lorsque le suivi live est activé sur la plateforme.
           </p>
         </motion.div>
       </section>
@@ -124,7 +123,7 @@ export function ResultsView({
         <section className="rounded-3xl border border-dashed border-border bg-muted/30 p-10 text-center">
           <p className="text-lg font-semibold tracking-tight">Résultats détaillés masqués</p>
           <p className="mt-3 text-sm text-muted-foreground">
-            Le classement et les pourcentages seront affichés lorsque l’administration activera la publication des
+            Le classement et les pourcentages seront affichés lorsque l&apos;administration autorisera la publication des
             résultats après clôture officielle.
           </p>
         </section>

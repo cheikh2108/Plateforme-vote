@@ -68,7 +68,7 @@ export function StatsStrip({
           </p>
           <p className="text-4xl font-semibold tracking-tight text-foreground">{uptimeLabel}</p>
           <p className="text-sm text-muted-foreground">
-            Flux Supabase Realtime sur les indicateurs agrégés.
+            Suivi en direct des indicateurs agrégés pendant la période de vote.
           </p>
         </motion.div>
       </div>

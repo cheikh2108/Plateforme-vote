@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { LayoutDashboard, LineChart, Users } from "lucide-react";
 import { getCurrentUserRole } from "@/lib/data/elections";
 import { hasSupabase } from "@/lib/env";
+import { LogoutButton } from "@/components/layout/logout-button";
 
 const links = [
   { href: "/admin", label: "Synthèse", icon: LayoutDashboard },
@@ -47,6 +48,9 @@ export default async function AdminLayout({
                 </Link>
               ))}
             </nav>
+            <div className="mt-8 border-t border-border pt-6">
+              <LogoutButton className="w-full" redirectTo="/auth/login" />
+            </div>
           </div>
         </aside>
         <div className="flex-1">{children}</div>

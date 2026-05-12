@@ -4,17 +4,17 @@ const items = [
   {
     icon: Lock,
     title: "Bulletin dissocié",
-    body: "Le registre de participation et les bulletins anonymes sont isolés : aucune jointure permise côté politiques SQL.",
+    body: "Le registre de participation et les bulletins anonymes sont isolés pour éviter tout rapprochement des choix.",
   },
   {
     icon: ScanEye,
     title: "Contrôle d’accès fin",
-    body: "RLS PostgreSQL : étudiants authentifiés domaine académique, lecture minimale, vote via fonction sécurisée.",
+    body: "Accès limité aux comptes autorisés, lecture minimale et vote protégé par une validation stricte.",
   },
   {
     icon: Server,
     title: "Temps réel sobre",
-    body: "Realtime sur agrégats uniquement : participation et indicateurs publics, jamais les choix individuels.",
+    body: "Le suivi en direct expose uniquement les agrégats publics, jamais les choix individuels.",
   },
 ];
 
