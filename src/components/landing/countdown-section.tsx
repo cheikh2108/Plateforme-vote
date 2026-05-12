@@ -17,25 +17,36 @@ export function CountdownSection({
   label = "Temps restant avant clôture",
 }: Props) {
   const end = useMemo(() => target.getTime(), [target]);
-  const [now, setNow] = useState(() => Date.now());
+  /** null jusqu'au montage client — évite l’écart SSR/hydration sur Date.now() */
+  const [now, setNow] = useState<number | null>(null);
 
   useEffect(() => {
+    setNow(Date.now());
     const id = window.setInterval(() => setNow(Date.now()), 1000);
     return () => window.clearInterval(id);
   }, []);
 
-  const remaining = Math.max(0, end - now);
-  const days = Math.floor(remaining / (24 * 60 * 60 * 1000));
-  const hours = Math.floor((remaining % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
-  const minutes = Math.floor((remaining % (60 * 60 * 1000)) / (60 * 1000));
-  const seconds = Math.floor((remaining % (60 * 1000)) / 1000);
-
-  const blocks = [
-    { label: "Jours", value: pad(days) },
-    { label: "Heures", value: pad(hours) },
-    { label: "Minutes", value: pad(minutes) },
-    { label: "Secondes", value: pad(seconds) },
-  ];
+  const blocks =
+    now === null
+      ? [
+          { label: "Jours", value: "—" },
+          { label: "Heures", value: "—" },
+          { label: "Minutes", value: "—" },
+          { label: "Secondes", value: "—" },
+        ]
+      : (() => {
+          const remaining = Math.max(0, end - now);
+          const days = Math.floor(remaining / (24 * 60 * 60 * 1000));
+          const hours = Math.floor((remaining % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+          const minutes = Math.floor((remaining % (60 * 60 * 1000)) / (60 * 1000));
+          const seconds = Math.floor((remaining % (60 * 1000)) / 1000);
+          return [
+            { label: "Jours", value: pad(days) },
+            { label: "Heures", value: pad(hours) },
+            { label: "Minutes", value: pad(minutes) },
+            { label: "Secondes", value: pad(seconds) },
+          ];
+        })();
 
   return (
     <section className="border-b border-border/70 bg-background">
