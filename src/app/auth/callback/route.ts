@@ -1,13 +1,16 @@
 import { NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import type { EmailOtpType } from "@supabase/supabase-js";
 
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get("code");
+  const tokenHash = requestUrl.searchParams.get("token_hash");
+  const otpType = requestUrl.searchParams.get("type") as EmailOtpType | null;
   const nextPath = requestUrl.searchParams.get("next") ?? "/vote";
 
-  if (!code) {
+  if (!code && !tokenHash) {
     return NextResponse.redirect(new URL("/auth/login", requestUrl.origin));
   }
 
@@ -32,7 +35,22 @@ export async function GET(request: Request) {
     },
   });
 
-  await supabase.auth.exchangeCodeForSession(code);
+  if (code) {
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    if (error) {
+      return NextResponse.redirect(new URL("/auth/login", requestUrl.origin));
+    }
+  } else if (tokenHash && otpType) {
+    const { error } = await supabase.auth.verifyOtp({
+      token_hash: tokenHash,
+      type: otpType,
+    });
+    if (error) {
+      return NextResponse.redirect(new URL("/auth/login", requestUrl.origin));
+    }
+  } else {
+    return NextResponse.redirect(new URL("/auth/login", requestUrl.origin));
+  }
 
   return NextResponse.redirect(new URL(nextPath, requestUrl.origin));
 }
