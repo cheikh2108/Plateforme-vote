@@ -17,9 +17,9 @@ import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import type { Candidate } from "@/types/database";
-import { createClient } from "@/lib/supabase/client";
 import { hasSupabase } from "@/lib/env";
 import { cn } from "@/lib/utils";
+import { castVoteAction } from "@/app/(site)/vote/actions";
 
 type Props = {
   electionId: string;
@@ -53,12 +53,7 @@ export function VoteBallot({
 
     setBusy(true);
     try {
-      const supabase = createClient();
-      const { error } = await supabase.rpc("cast_vote", {
-        p_election: electionId,
-        p_candidate: choice,
-      });
-      if (error) throw error;
+      await castVoteAction(electionId, choice);
       setDone(true);
       setConfirmOpen(false);
       toast.success("Bulletin enregistré — merci pour votre participation.");
