@@ -20,7 +20,7 @@ export function useElectionParticipation(electionId: string | null, initial: num
       .on(
         "postgres_changes",
         {
-          event: "*",
+          event: "UPDATE",
           schema: "public",
           table: "election_stats",
           filter: `election_id=eq.${electionId}`,

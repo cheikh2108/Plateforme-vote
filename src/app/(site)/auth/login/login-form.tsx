@@ -22,7 +22,7 @@ function isValidEmail(email: string): boolean {
 }
 
 function normalizeNextPath(nextPath: string) {
-  return nextPath.startsWith("/") ? nextPath : "/vote";
+  return nextPath.startsWith("/") && !nextPath.startsWith("//") ? nextPath : "/vote";
 }
 
 export function LoginForm({ nextPath }: Props) {
@@ -34,10 +34,6 @@ export function LoginForm({ nextPath }: Props) {
   const [studentCodeSent, setStudentCodeSent] = useState(false);
   const [studentLoading, setStudentLoading] = useState<"send" | "verify" | null>(null);
 
-  const [adminEmail, setAdminEmail] = useState("");
-  const [adminPassword, setAdminPassword] = useState("");
-  const [adminLoading, setAdminLoading] = useState(false);
-
   function validateStudentEmail(): string | null {
     if (!hasSupabase) {
       toast.error("La configuration d'authentification n'est pas prête.");
@@ -47,21 +43,6 @@ export function LoginForm({ nextPath }: Props) {
     const trimmed = studentEmail.trim().toLowerCase();
     if (!isAllowedStudentEmail(trimmed)) {
       toast.error(`Seuls les emails ${siteConfig.allowedEmailDomain} sont autorisés.`);
-      return null;
-    }
-
-    return trimmed;
-  }
-
-  function validateAdminEmail(): string | null {
-    if (!hasSupabase) {
-      toast.error("La configuration d'authentification n'est pas prête.");
-      return null;
-    }
-
-    const trimmed = adminEmail.trim().toLowerCase();
-    if (!isValidEmail(trimmed)) {
-      toast.error("Entrez une adresse e-mail valide pour l'administration.");
       return null;
     }
 
@@ -124,48 +105,19 @@ export function LoginForm({ nextPath }: Props) {
     }
   }
 
-  async function handleAdminLogin(e: React.FormEvent) {
-    e.preventDefault();
-    const trimmed = validateAdminEmail();
-    if (!trimmed) return;
-    if (!adminPassword) {
-      toast.error("Entrez le mot de passe administrateur.");
-      return;
-    }
-
-    setAdminLoading(true);
-    try {
-      const supabase = createClient();
-      const { error } = await supabase.auth.signInWithPassword({
-        email: trimmed,
-        password: adminPassword,
-      });
-
-      if (error) throw error;
-      toast.success("Connexion réussie.");
-      router.push(destinationPath);
-      router.refresh();
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Échec de connexion.");
-    } finally {
-      setAdminLoading(false);
-    }
-  }
-
   return (
     <div className="space-y-8">
       <div className="space-y-3">
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
           Accès sécurisé
         </p>
-        <h1 className="text-3xl font-semibold tracking-tight">Connexion et vérification</h1>
+        <h1 className="text-3xl font-semibold tracking-tight">Connexion Étudiant</h1>
         <p className="text-sm leading-relaxed text-muted-foreground">
-          Les étudiants valident leur e-mail, reçoivent un code de vérification puis créent leur mot de passe. Les
-          administrateurs utilisent directement leur mot de passe.
+          Validez votre e-mail, recevez un code de vérification puis créez votre mot de passe.
         </p>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="max-w-xl mx-auto">
         <section className="space-y-6 rounded-3xl border border-border bg-card p-8 shadow-sm">
           <div className="space-y-2">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
@@ -243,68 +195,10 @@ export function LoginForm({ nextPath }: Props) {
             Après validation, vous choisirez votre mot de passe pour revenir plus tard sans redemander de code.
           </p>
         </section>
-
-        <section className="space-y-6 rounded-3xl border border-border bg-card p-8 shadow-sm">
-          <div className="space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-              Administration
-            </p>
-            <h2 className="text-2xl font-semibold tracking-tight">Connexion administrateur</h2>
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              Accès réservé au compte de gestion du scrutin. L&apos;e-mail peut être scolaire ou personnel selon votre
-              rôle.
-            </p>
-          </div>
-
-          <form className="space-y-5" onSubmit={handleAdminLogin}>
-            <div className="space-y-2">
-              <Label htmlFor="admin-email">E-mail</Label>
-              <Input
-                id="admin-email"
-                name="admin-email"
-                type="email"
-                autoComplete="email"
-                required
-                placeholder="admin@exemple.com"
-                value={adminEmail}
-                onChange={(ev) => setAdminEmail(ev.target.value)}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="admin-password">Mot de passe</Label>
-              <Input
-                id="admin-password"
-                name="admin-password"
-                type="password"
-                autoComplete="current-password"
-                required
-                placeholder="Mot de passe administrateur"
-                value={adminPassword}
-                onChange={(ev) => setAdminPassword(ev.target.value)}
-              />
-            </div>
-
-            <Button type="submit" disabled={adminLoading} className="w-full rounded-full">
-              {adminLoading ? (
-                <>
-                  <Loader2 className="mr-2 size-4 animate-spin" aria-hidden />
-                  Connexion…
-                </>
-              ) : (
-                "Accéder au tableau de bord"
-              )}
-            </Button>
-          </form>
-
-          <p className="text-xs leading-relaxed text-muted-foreground">
-            Ce chemin servira pour votre futur super-admin. Il reste séparé du parcours étudiant.
-          </p>
-        </section>
       </div>
 
       <Link href="/" className={cn(buttonVariants({ variant: "ghost" }), "-mt-2 inline-flex rounded-full")}>
-        Retour à l’accueil
+        Retour à l'accueil
       </Link>
     </div>
   );

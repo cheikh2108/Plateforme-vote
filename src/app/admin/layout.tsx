@@ -22,7 +22,7 @@ export default async function AdminLayout({
 
   const role = await getCurrentUserRole();
   if (!role) {
-    redirect("/auth/login?next=/admin");
+    redirect("/admin-login?next=/admin");
   }
   if (role !== "admin") {
     redirect("/");

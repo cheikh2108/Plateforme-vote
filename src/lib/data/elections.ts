@@ -176,21 +176,16 @@ export async function getResultsBreakdown(electionId: string): Promise<
     if (profile?.role !== "admin") return null;
   }
 
-  const { data: ballots, error } = await supabase
-    .from("ballots")
-    .select("candidate_id")
+  const { data, error } = await supabase
+    .from("ballot_tally")
+    .select("candidate_id, votes")
     .eq("election_id", electionId);
 
-  if (error || !ballots) return null;
+  if (error || !data) return null;
 
-  const tally = new Map<string, number>();
-  for (const row of ballots) {
-    const id = row.candidate_id as string;
-    tally.set(id, (tally.get(id) ?? 0) + 1);
-  }
-  return Array.from(tally.entries()).map(([candidate_id, votes]) => ({
-    candidate_id,
-    votes,
+  return data.map((row) => ({
+    candidate_id: row.candidate_id as string,
+    votes: Number(row.votes),
   }));
 }
 

@@ -8,7 +8,8 @@ export async function GET(request: Request) {
   const code = requestUrl.searchParams.get("code");
   const tokenHash = requestUrl.searchParams.get("token_hash");
   const otpType = requestUrl.searchParams.get("type") as EmailOtpType | null;
-  const nextPath = requestUrl.searchParams.get("next") ?? "/vote";
+  const rawNext = requestUrl.searchParams.get("next") ?? "/vote";
+  const nextPath = rawNext.startsWith("/") && !rawNext.startsWith("//") ? rawNext : "/vote";
 
   if (!code && !tokenHash) {
     return NextResponse.redirect(new URL("/auth/login", requestUrl.origin));

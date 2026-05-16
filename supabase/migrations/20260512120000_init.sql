@@ -101,7 +101,17 @@ as $$
 declare
   s_id uuid;
 begin
-  select id into s_id from public.schools order by created_at asc limit 1;
+  -- Match school by eligible_email_suffix first, then fall back to oldest school
+  select e.school_id into s_id
+  from public.elections e
+  where lower(new.email) like ('%' || lower(e.eligible_email_suffix))
+  order by e.created_at asc
+  limit 1;
+
+  if s_id is null then
+    select id into s_id from public.schools order by created_at asc limit 1;
+  end if;
+
   insert into public.profiles (id, school_id, role)
   values (new.id, s_id, 'voter')
   on conflict (id) do nothing;
@@ -243,6 +253,12 @@ create policy "ballots_select_results" on public.ballots for select using (
 -- Stats participation : visibles pendant et après le scrutin
 drop policy if exists "election_stats_select_all" on public.election_stats;
 create policy "election_stats_select_all" on public.election_stats for select using (true);
+
+-- Vue agrégée des résultats (remplace le comptage côté application)
+create or replace view public.ballot_tally as
+  select election_id, candidate_id, count(*) as votes
+  from public.ballots
+  group by election_id, candidate_id;
 
 -- Données initiales (première école — adapter le branding en prod)
 insert into public.schools (slug, name, tagline, branding)

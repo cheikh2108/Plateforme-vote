@@ -38,7 +38,8 @@ export function SetupPasswordForm({ nextPath }: Props) {
       const { error } = await supabase.auth.updateUser({ password });
       if (error) throw error;
       toast.success("Mot de passe enregistré.");
-      router.push(nextPath);
+      const safePath = nextPath.startsWith("/") && !nextPath.startsWith("//") ? nextPath : "/vote";
+      router.push(safePath);
       router.refresh();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Impossible d'enregistrer le mot de passe.");
