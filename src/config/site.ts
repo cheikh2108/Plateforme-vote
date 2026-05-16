@@ -4,15 +4,15 @@
  */
 
 export const siteConfig = {
-  name: process.env.NEXT_PUBLIC_SCHOOL_NAME ?? "ESTM",
-  shortName: process.env.NEXT_PUBLIC_SCHOOL_SHORT_NAME ?? "ESTM Vote",
+  name: process.env.NEXT_PUBLIC_SCHOOL_NAME ?? "Eligo · ESTM",
+  shortName: process.env.NEXT_PUBLIC_SCHOOL_SHORT_NAME ?? "Eligo",
   tagline:
     process.env.NEXT_PUBLIC_SCHOOL_TAGLINE ??
     "Gouvernance étudiante — vote vérifié, anonyme et traçable.",
   heroStatement:
     process.env.NEXT_PUBLIC_HERO_STATEMENT ??
-    "Une plateforme électorale institutionnelle pour votre campus.",
-  domainHint: process.env.NEXT_PUBLIC_DOMAIN_HINT ?? "vote.votre-ecole.sn",
+    "La plateforme électorale de votre campus.",
+  domainHint: process.env.NEXT_PUBLIC_DOMAIN_HINT ?? "eligo.estm.sn",
   /** Domaine email autorisé pour voter (sans @) */
   allowedEmailDomain:
     process.env.NEXT_PUBLIC_ALLOWED_EMAIL_DOMAIN ?? "estm.edu.sn",

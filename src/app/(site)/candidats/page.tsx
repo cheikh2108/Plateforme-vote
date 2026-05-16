@@ -24,8 +24,7 @@ export default async function CandidatesPage() {
           Les candidatures officielles
         </h1>
         <p className="text-base leading-relaxed text-muted-foreground">
-          Chaque fiche est structurée pour une lecture rapide : programme, engagements et équipe. Les documents PDF
-          peuvent être ajoutés par l’administration.
+          Consultez le programme, les engagements et l&apos;équipe de chaque liste avant de déposer votre bulletin.
         </p>
       </header>
       <div className="mt-14 grid gap-8 md:grid-cols-2 lg:grid-cols-3">

@@ -22,8 +22,10 @@ export default async function SetupPasswordPage({
   }
 
   return (
-    <div className="mx-auto flex max-w-lg flex-col gap-10 px-4 py-20 sm:px-6">
-      <SetupPasswordForm nextPath={nextPath} />
+    <div className="flex min-h-[calc(100vh-8rem)] items-center">
+      <div className="mx-auto w-full max-w-lg px-4 py-16 sm:px-6">
+        <SetupPasswordForm nextPath={nextPath} />
+      </div>
     </div>
   );
 }

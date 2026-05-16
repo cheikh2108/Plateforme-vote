@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { type VariantProps } from "class-variance-authority";
 import { createClient } from "@/lib/supabase/client";
@@ -24,8 +23,6 @@ export function LogoutButton({
   label = "Déconnexion",
   onSuccess,
 }: Props) {
-  const router = useRouter();
-
   async function handleLogout() {
     const supabase = createClient();
     const { error } = await supabase.auth.signOut();
@@ -35,8 +32,7 @@ export function LogoutButton({
     }
 
     onSuccess?.();
-    router.push(redirectTo);
-    router.refresh();
+    window.location.assign(redirectTo);
   }
 
   return (

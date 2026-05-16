@@ -1,47 +1,82 @@
+"use client";
+
+import { motion } from "framer-motion";
+
 const steps = [
   {
-    title: "Vérification",
-    detail: "Un code est envoyé par e-mail pour confirmer que le compte appartient bien à l'électeur.",
+    n: "1",
+    title: "Vérification d'identité",
+    detail:
+      "Saisissez votre adresse académique. Un code à 6 chiffres est envoyé — vous le validez, puis vous créez votre mot de passe personnel.",
+    aside: "~60 secondes",
   },
   {
-    title: "Vote anonyme",
-    detail: "Sélection d’une liste, confirmation explicite, puis dépôt du bulletin sans exposition d’identité.",
+    n: "2",
+    title: "Dépôt du bulletin",
+    detail:
+      "Choisissez une liste parmi les candidatures officielles. Une confirmation explicite avant envoi — action définitive et anonyme.",
+    aside: "Irréversible",
   },
   {
-    title: "Publication maîtrisée",
-    detail: "Pendant le scrutin : participation uniquement. Après clôture : résultats détaillés publiés par l’administration.",
+    n: "3",
+    title: "Résultats publiés",
+    detail:
+      "Pendant le scrutin : participation globale visible. Après clôture : l'administration publie les résultats détaillés au moment choisi.",
+    aside: "Contrôlé",
   },
 ];
 
 export function HowItWorks() {
   return (
-    <section className="border-y border-border/70 bg-muted/40">
-      <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-        <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
-          <div className="max-w-md space-y-3">
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-              Fonctionnement
-            </p>
-            <h2 className="text-3xl font-semibold tracking-tight text-foreground">
-              Un parcours clair, sans friction inutile.
-            </h2>
-          </div>
-          <ol className="grid flex-1 gap-6">
-            {steps.map((step, index) => (
-              <li
-                key={step.title}
-                className="flex gap-5 rounded-3xl border border-border bg-background/80 p-6"
-              >
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-foreground text-sm font-semibold text-background">
-                  {index + 1}
-                </span>
-                <div>
-                  <h3 className="text-lg font-semibold tracking-tight">{step.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{step.detail}</p>
+    <section className="border-y border-border">
+      <div className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+        <div className="mb-14 space-y-4">
+          <span className="editorial-rule" />
+          <h2 className="text-4xl font-light tracking-tight">
+            Comment ça{" "}
+            <span className="font-semibold">fonctionne.</span>
+          </h2>
+        </div>
+
+        <div className="relative grid gap-8 md:grid-cols-3">
+          {/* Animated connector line */}
+          <motion.div
+            aria-hidden
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute left-8 right-8 top-8 hidden h-px origin-left bg-gradient-to-r from-estm-blue via-estm-blue/40 to-transparent md:block"
+          />
+
+          {steps.map((s, i) => (
+            <motion.div
+              key={s.n}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+              className="relative flex flex-col gap-6"
+            >
+              {/* Double-bezel step number */}
+              <div className="flex items-center gap-4">
+                <div className="relative z-10 shrink-0 rounded-full border-2 border-estm-blue bg-background p-1">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-estm-blue">
+                    <span className="text-base font-semibold leading-none text-white">{s.n}</span>
+                  </div>
                 </div>
-              </li>
-            ))}
-          </ol>
+                <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+                  {s.aside}
+                </span>
+              </div>
+
+              {/* Content */}
+              <div className="space-y-2">
+                <h3 className="text-lg font-semibold leading-tight">{s.title}</h3>
+                <p className="text-sm leading-relaxed text-muted-foreground">{s.detail}</p>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

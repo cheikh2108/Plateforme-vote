@@ -12,6 +12,7 @@ import {
 import { createClient } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
+import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
   title: "Vote sécurisé",
@@ -26,6 +27,9 @@ export default async function VotePage() {
     return (
       <div className="mx-auto max-w-3xl px-4 py-20 text-center sm:px-6">
         <p className="text-lg font-semibold">Aucune élection configurée</p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Revenez plus tard ou contactez l&apos;administration.
+        </p>
       </div>
     );
   }
@@ -35,22 +39,16 @@ export default async function VotePage() {
 
   if (!hasSupabase) {
     return (
-      <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6">
-        <header className="mb-10 space-y-3">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-            Mode hors ligne
-          </p>
-          <h1 className="text-4xl font-semibold tracking-tight">Vote sécurisé</h1>
-          <p className="text-muted-foreground">
-            La plateforme n’est pas encore reliée au service d’authentification. Activez la configuration pour voter.
-          </p>
-        </header>
-        <VoteBallot
-          electionId={election.id}
-          candidates={candidates}
-          initialHasVoted={false}
-          votingOpen={live}
-        />
+      <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6">
+        <PageHeader election={election} />
+        <div className="mt-10">
+          <VoteBallot
+            electionId={election.id}
+            candidates={candidates}
+            initialHasVoted={false}
+            votingOpen={live}
+          />
+        </div>
       </div>
     );
   }
@@ -68,30 +66,37 @@ export default async function VotePage() {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6">
-      <header className="mb-12 flex flex-col gap-6 border-b border-border pb-10 md:flex-row md:items-end md:justify-between">
-        <div className="space-y-3">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-            Bulletin anonyme
-          </p>
-          <h1 className="text-4xl font-semibold tracking-tight text-foreground">{election.title}</h1>
-          <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Votre choix est séparé de votre identité. Le compte utilisé sert uniquement à valider votre accès.
-          </p>
-        </div>
-        <Link
-          href="/candidats"
-          className={cn(buttonVariants({ variant: "outline" }), "rounded-full")}
-        >
-          Consulter les programmes
-        </Link>
-      </header>
-
-      <VoteBallot
-        electionId={election.id}
-        candidates={candidates}
-        initialHasVoted={voted}
-        votingOpen={live}
-      />
+      <PageHeader election={election} />
+      <div className="mt-10">
+        <VoteBallot
+          electionId={election.id}
+          candidates={candidates}
+          initialHasVoted={voted}
+          votingOpen={live}
+        />
+      </div>
     </div>
+  );
+}
+
+function PageHeader({ election }: { election: { title: string } }) {
+  return (
+    <header className="flex flex-col gap-6 border-b border-border pb-8 md:flex-row md:items-end md:justify-between">
+      <div className="space-y-2">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+          {siteConfig.shortName} · Bulletin anonyme
+        </p>
+        <h1 className="text-3xl font-semibold tracking-tight">{election.title}</h1>
+        <p className="max-w-xl text-sm text-muted-foreground">
+          Votre vote est séparé de votre identité. Le compte sert uniquement à valider votre accès.
+        </p>
+      </div>
+      <Link
+        href="/candidats"
+        className={cn(buttonVariants({ variant: "outline", size: "sm" }), "rounded-full shrink-0")}
+      >
+        Consulter les programmes
+      </Link>
+    </header>
   );
 }

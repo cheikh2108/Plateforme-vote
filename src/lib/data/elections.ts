@@ -115,13 +115,21 @@ export async function getCurrentUserRole(): Promise<UserRole | null> {
   } = await supabase.auth.getUser();
   if (!user) return null;
 
-  const { data } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .maybeSingle();
+  // Utilise une fonction SECURITY DEFINER pour bypasser le RLS
+  // et éviter la récursion dans profiles_admin_all.
+  const { data, error } = await supabase.rpc("get_my_role");
 
-  return (data?.role as UserRole) ?? "voter";
+  if (error || !data) {
+    // Fallback : lecture directe si la fonction RPC n'existe pas encore
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .maybeSingle();
+    return (profile?.role as UserRole) ?? null;
+  }
+
+  return data as UserRole;
 }
 
 export async function userHasVoted(

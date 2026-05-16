@@ -1,49 +1,72 @@
-import { Lock, ScanEye, Server } from "lucide-react";
+"use client";
+
+import { motion } from "framer-motion";
 
 const items = [
   {
-    icon: Lock,
-    title: "Bulletin dissocié",
-    body: "Le registre de participation et les bulletins anonymes sont isolés pour éviter tout rapprochement des choix.",
+    label: "Séparation totale des données",
+    body: "Qui a voté et pour qui sont deux informations stockées séparément, sans aucun lien entre elles. Personne ne peut reconstruire votre choix.",
   },
   {
-    icon: ScanEye,
-    title: "Contrôle d’accès fin",
-    body: "Accès limité aux comptes autorisés, lecture minimale et vote protégé par une validation stricte.",
+    label: "Adresse académique obligatoire",
+    body: "Seules les adresses e-mail de l'établissement sont acceptées. Aucun accès possible depuis une adresse personnelle.",
   },
   {
-    icon: Server,
-    title: "Temps réel sobre",
-    body: "Le suivi en direct expose uniquement les agrégats publics, jamais les choix individuels.",
+    label: "Un vote, une fois",
+    body: "Il est impossible de voter deux fois. Ce verrou est gravé au niveau de la plateforme — aucune exception, même administrative.",
+  },
+  {
+    label: "Accès strictement contrôlé",
+    body: "Chaque action est soumise à des règles d'accès précises. L'application ne peut pas outrepasser ces règles, même en cas d'erreur.",
+  },
+  {
+    label: "Résultats sous contrôle institutionnel",
+    body: "Les résultats détaillés ne sont publiés qu'au moment choisi par l'administration. Rien ne s'affiche avant la décision officielle.",
+  },
+  {
+    label: "Opérations sensibles sécurisées",
+    body: "Les actions critiques comme le dépôt du bulletin s'exécutent sous un niveau de privilège élevé, sans que l'application cliente y ait accès.",
   },
 ];
 
 export function SecuritySection() {
   return (
-    <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-      <div className="max-w-2xl space-y-4">
-        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-          Sécurité & confiance
-        </p>
-        <h2 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-          Une architecture pensée pour la légitimité électorale.
-        </h2>
-        <p className="text-base leading-relaxed text-muted-foreground">
-          La plateforme refuse le spectacle technique superflu : priorité à la sobriété, à la traçabilité et à la séparation
-          stricte des données sensibles.
-        </p>
-      </div>
-      <div className="mt-12 grid gap-6 md:grid-cols-3">
-        {items.map((item) => (
-          <article
-            key={item.title}
-            className="rounded-3xl border border-border bg-card/70 p-6 shadow-sm transition hover:border-brand/40"
-          >
-            <item.icon className="size-6 text-brand" aria-hidden />
-            <h3 className="mt-4 text-lg font-semibold tracking-tight">{item.title}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.body}</p>
-          </article>
-        ))}
+    <section className="bg-estm-blue text-white">
+      <div className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+
+        {/* Header inversé */}
+        <div className="mb-16 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-xl space-y-4">
+            <span className="editorial-rule" style={{ background: "rgba(255,255,255,0.4)" }} />
+            <h2 className="text-4xl font-light leading-tight tracking-tight sm:text-5xl">
+              Conçu pour
+              <br />
+              <span className="font-semibold">inspirer confiance.</span>
+            </h2>
+          </div>
+          <p className="max-w-xs text-sm leading-relaxed text-white/50 lg:text-right">
+            Six garanties concrètes sur lesquelles repose l&apos;intégrité de chaque scrutin.
+          </p>
+        </div>
+
+        {/* Grille — séparateurs minimalistes */}
+        <div className="grid gap-px bg-white/10 sm:grid-cols-2 lg:grid-cols-3">
+          {items.map((item, i) => (
+            <motion.article
+              key={item.label}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.45, delay: (i % 3) * 0.07 }}
+              className="flex flex-col gap-3 bg-estm-blue p-6"
+            >
+              <h3 className="text-sm font-semibold leading-tight text-white">
+                {item.label}
+              </h3>
+              <p className="text-sm leading-relaxed text-white/50">{item.body}</p>
+            </motion.article>
+          ))}
+        </div>
       </div>
     </section>
   );

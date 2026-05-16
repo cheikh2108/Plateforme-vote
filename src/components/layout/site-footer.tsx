@@ -1,61 +1,91 @@
 import Link from "next/link";
 import { siteConfig } from "@/config/site";
 
+const year = new Date().getFullYear();
+
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border/70 bg-card/40">
-      <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-14 sm:px-6 lg:flex-row lg:justify-between">
-        <div className="max-w-md space-y-4">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-            Plateforme électorale
-          </p>
-          <h3 className="text-2xl font-semibold tracking-tight text-foreground">
-            {siteConfig.name}
-          </h3>
-          <p className="text-sm leading-relaxed text-muted-foreground">
-            {siteConfig.tagline} Architecture auditée, anonymat du bulletin,
-            traçabilité sans exposition des choix individuels.
-          </p>
-        </div>
-        <div className="grid grid-cols-2 gap-10 text-sm sm:grid-cols-3">
-          <div className="space-y-3">
-            <p className="font-medium text-foreground">Navigation</p>
-            <ul className="space-y-2 text-muted-foreground">
-              <li>
-                <Link href="/candidats" className="hover:text-foreground">
-                  Candidats
-                </Link>
-              </li>
-              <li>
-                <Link href="/vote" className="hover:text-foreground">
-                  Vote sécurisé
-                </Link>
-              </li>
-              <li>
-                <Link href="/resultats" className="hover:text-foreground">
-                  Participation
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div className="space-y-3">
-            <p className="font-medium text-foreground">Confiance</p>
-            <ul className="space-y-2 text-muted-foreground">
-              <li>Auth domaine académique</li>
-              <li>Accès restreint</li>
-              <li>Temps réel anonymisé</li>
-            </ul>
-          </div>
-          <div className="space-y-3">
-            <p className="font-medium text-foreground">Contact</p>
-            <p className="text-muted-foreground">
-              Support délégué vie étudiante — canal officiel de votre école.
+    <footer className="border-t border-border">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+
+        {/* Corps footer */}
+        <div className="grid gap-12 py-14 lg:grid-cols-[2fr_1fr_1fr_1fr]">
+
+          {/* Identité */}
+          <div className="space-y-4">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+                Plateforme électorale étudiante
+              </p>
+              <p className="mt-1 text-2xl font-semibold tracking-tight">Eligo</p>
+              <p className="text-xs text-muted-foreground italic">« je choisis »</p>
+            </div>
+            <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">
+              {siteConfig.tagline}
             </p>
           </div>
+
+          {/* Navigation */}
+          <div className="space-y-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              Plateforme
+            </p>
+            <ul className="space-y-2.5 text-sm">
+              {[
+                { href: "/candidats", label: "Candidats" },
+                { href: "/vote", label: "Voter" },
+                { href: "/resultats", label: "Résultats" },
+              ].map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href} className="text-muted-foreground transition hover:text-foreground">
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Accès */}
+          <div className="space-y-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              Accès
+            </p>
+            <ul className="space-y-2.5 text-sm">
+              {[
+                { href: "/auth/login", label: "Connexion étudiant" },
+                { href: "/admin-login", label: "Administration" },
+              ].map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href} className="text-muted-foreground transition hover:text-foreground">
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Garanties */}
+          <div className="space-y-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              Garanties
+            </p>
+            <ul className="space-y-2.5 text-sm text-muted-foreground">
+              <li>Anonymat garanti</li>
+              <li>Accès académique uniquement</li>
+              <li>Un vote par électeur</li>
+            </ul>
+          </div>
         </div>
-      </div>
-      <div className="border-t border-border/60 py-6 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} {siteConfig.name} · Plateforme électorale étudiante
+
+        {/* Barre basse */}
+        <div className="flex flex-col items-start justify-between gap-2 border-t border-border py-5 sm:flex-row sm:items-center">
+          <p className="text-xs text-muted-foreground">
+            © {year} {siteConfig.name} · Tous droits réservés
+          </p>
+          <p className="text-xs text-muted-foreground">
+            Scrutin sécurisé · résultats sous contrôle institutionnel
+          </p>
+        </div>
       </div>
     </footer>
   );
